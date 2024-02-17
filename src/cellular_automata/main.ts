@@ -1,14 +1,14 @@
 import p5 from "p5";
 
-const ROWS = 130;
-const COLS = 130;
-const SIZE = 6;
+export const SIZE = 10;
+const ROWS = Math.floor(window.innerHeight / SIZE);
+const COLS = Math.floor(window.innerWidth / SIZE);
 const WIDTH = COLS * SIZE;
 const HEIGHT = ROWS * SIZE;
 let paused = false;
 
-let activeCells: Array<Array<number>> = [];
-let inactiveCells: Array<Array<number>> = [];
+export let activeCells: Array<Array<number>> = [];
+export let inactiveCells: Array<Array<number>> = [];
 
 new p5((p: p5) => {
 	p.setup = () => {
