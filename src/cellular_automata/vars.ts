@@ -14,7 +14,7 @@ export const DIMS = {
 	height: HEIGHT
 }
 
-type Cell = {
+export type Cell = {
 	age: number; // -1: just died, 1: just became alive, 5: alive for 5 gens, -5: dead for 5 gens, 0: no cell
 	species: "A" | "B"
 }
@@ -40,7 +40,7 @@ export type Substrate = 0 | 1
 export const substrateMap = new Array(DIMS.rows) as Array<Array<Substrate>>;
 
 export const createSubstrateMap = (p: p5) => {
-	const noiseScale = 0.08;
+	const noiseScale = 0.03;
 	for (let r = 0; r < DIMS.rows; r++) {
 		substrateMap[r] = new Array<Substrate>(COLS);
 		for (let c = 0; c < DIMS.cols; c++) {

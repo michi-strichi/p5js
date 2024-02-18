@@ -1,6 +1,6 @@
 import p5 from "p5";
 import { mod } from "./utils";
-import { DIMS, cells } from "./vars";
+import { Cell, DIMS, Substrate, cells, substrateMap } from "./vars";
 
 export const populateCells = (p: p5, chance: number) => {
 	clearAllCells();
@@ -27,7 +27,7 @@ export const killRadius = (p: p5, row: number, col: number, radius: number) => {
 			const affected = d < radius;
 			if (!affected) continue;
 			const cell = cells.active[mod(row + r, DIMS.rows)][mod(col + c, DIMS.cols)];
-			if(cell.age > 0) cell.age = -1;
+			if (cell.age > 0) cell.age = -1;
 		}
 	}
 };
@@ -36,14 +36,17 @@ export const killRadius = (p: p5, row: number, col: number, radius: number) => {
 export const updateStates = () => {
 	for (let r = 0; r < DIMS.rows; r++) {
 		for (let c = 0; c < DIMS.cols; c++) {
-			cells.inactive[r][c].age = classicRules(r, c);
+			const rulesFunc = substrateRules[substrateMap[r][c]];
+			cells.inactive[r][c].age = rulesFunc(r, c);
 		}
 	}
 
 	[cells.active, cells.inactive] = [cells.inactive, cells.active];
 };
 
-const classicRules = (row: number, col: number) => {
+type RulesFunc = (r: number, c: number) => number;
+
+const classicRules: RulesFunc = (row: number, col: number) => {
 	// live, < 2 --- dead
 	// live, 2 || 3 --- alive
 	// live , > 3 --- dead
@@ -61,6 +64,25 @@ const classicRules = (row: number, col: number) => {
 	}
 };
 
+const overpopulationRules: RulesFunc = (row: number, col: number) => {
+	const cell = cells.active[row][col];
+	const { aliveNeighborsCount, deadNeighborsCount } = countNeighbors(row, col, 1);
+
+	if (cell.age <= 0) {
+		if (aliveNeighborsCount === 3) return 1;
+		else if (cell.age === 0) return 0
+		else return cell.age - 1;
+	} else {
+		if (aliveNeighborsCount < 2 || 4 < aliveNeighborsCount) return -1;
+		else return cell.age + 1;
+	}
+}
+
+const substrateRules: { [K in Substrate]: RulesFunc } = {
+	0: classicRules,
+	1: overpopulationRules
+}
+
 const countNeighbors = (row: number, col: number, radius: number) => {
 	let aliveNeighborsCount = 0;
 	let deadNeighborsCount = 0;
@@ -75,5 +97,5 @@ const countNeighbors = (row: number, col: number, radius: number) => {
 		}
 	}
 
-	return { aliveNeighborsCount, deadNeighborsCount  };
+	return { aliveNeighborsCount, deadNeighborsCount };
 };

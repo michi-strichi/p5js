@@ -7,7 +7,7 @@ import { assignInteractions, mouseDrawCells } from "./interaction";
 new p5((p: p5) => {
 	p.setup = () => {
 		p.createCanvas(DIMS.width, DIMS.height);
-		p.frameRate(20);
+		p.frameRate(15);
 
 		createSubstrateMap(p);
 		populateCells(p, 8);
@@ -19,7 +19,8 @@ new p5((p: p5) => {
 		// drawGrid(p); 
 		if (!gameState.paused) updateStates();
 		mouseDrawCells(p);
-		drawCells(p);
+		
 		drawSubstrate(p);
+		drawCells(p);
 	};
 });

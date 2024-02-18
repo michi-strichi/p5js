@@ -14,8 +14,8 @@ export const drawCells = (p: p5) => {
 };
 
 const setColorForAge = (p: p5, age: number) => {
-	if (age > 0) p.fill(100, 0, p.constrain(255 - age * 5, 100, 255));
-	if (age < 0) p.fill(50 + age, 50 + age, 50 + age);
+	if (age > 0) p.fill(0, p.constrain(200 - age * 5, 110, 255), 30);
+	if (age < 0) p.fill(0, 50, 10, 70 + age);
 };
 
 export const drawSubstrate = (p: p5) => {
@@ -29,8 +29,8 @@ export const drawSubstrate = (p: p5) => {
 
 const setColorForSubstrate = (p: p5, substrate: Substrate) => {
 	switch (substrate) {
-		case 0: p.fill(255, 0, 0, 50); break;
-		case 1: p.fill(0, 255, 0, 50)
+		case 0: p.fill(99, 78, 53); break;
+		case 1: p.fill(54, 40, 22)
 	}
 }
 
