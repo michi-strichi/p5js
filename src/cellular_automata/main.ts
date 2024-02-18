@@ -10,12 +10,12 @@ new p5((p: p5) => {
 		p.createCanvas(DIMS.width, DIMS.height);
 		p.frameRate(20);
 
-		populateCells(p);
+		populateCells(p, 8);
 		assignInteractions(p);
 	};
 
 	p.draw = () => {
-		p.background(p.unhex(["0F", "11", "1A"]));
+		p.background("black");
 		// drawGrid(p);
 
 		if (!gameState.paused) updateStates();

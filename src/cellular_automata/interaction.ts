@@ -1,6 +1,6 @@
 
 import p5 from "p5";
-import { eraseRadius, populateCells } from "./logic";
+import { clearAllCells, killRadius, populateCells } from "./logic";
 import { gameState, DIMS, cells } from "./vars";
 
 export const assignInteractions = (p: p5) => {
@@ -9,14 +9,14 @@ export const assignInteractions = (p: p5) => {
 			case " ":
 				gameState.paused = !gameState.paused;
 				break;
-			case "c": // clear ;
-				populateCells(p, true);
-				break;
 			case "p":
-				populateCells(p);
+				populateCells(p, 3);
 				break;
-			case "e":
-				eraseRadius(p, p.floor(p.mouseY / DIMS.size), p.floor(p.mouseX / DIMS.size), 10);
+			case "c":
+				clearAllCells();
+				break;
+			case "k":
+				killRadius(p, p.floor(p.mouseY / DIMS.size), p.floor(p.mouseX / DIMS.size), 10);
 				break;
 		}
 	}
