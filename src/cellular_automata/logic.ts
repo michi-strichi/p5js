@@ -26,7 +26,8 @@ export const killRadius = (p: p5, row: number, col: number, radius: number) => {
 			const d = p.dist(row, col, row + r, col + c);
 			const affected = d < radius;
 			if (!affected) continue;
-			cells.active[mod(row + r, DIMS.rows)][mod(col + c, DIMS.cols)].age = -1;
+			const cell = cells.active[mod(row + r, DIMS.rows)][mod(col + c, DIMS.cols)];
+			if(cell.age > 0) cell.age = -1;
 		}
 	}
 };

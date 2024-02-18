@@ -1,24 +1,38 @@
 import p5 from "p5";
-import { DIMS, cells } from "./vars";
+import { DIMS, Substrate, cells, substrateMap } from "./vars";
 
-export const renderCells = (p: p5) => {
+export const drawCells = (p: p5) => {
 	p.noStroke();
 	for (let r = 0; r < DIMS.rows; r++) {
 		for (let c = 0; c < DIMS.cols; c++) {
 			const cell = cells.active[r][c];
 			if (cell.age === 0) continue;
-			const color = getColorForAge(p, cell.age);
-			p.fill(color.r, color.g, color.b);
+			setColorForAge(p, cell.age);
 			p.square(c * DIMS.size, r * DIMS.size, DIMS.size);
 		}
 	}
 };
 
-const getColorForAge = (p: p5, age: number) => {
-	if (age > 0) return { r: 100, g: 0, b: p.constrain(255 - age * 5 , 100, 255)};
-	if (age < 0) return { r: 50 + age, g: 50 + age, b: 50 + age }
-	return { r: 0, g: 0, b: 0 };
+const setColorForAge = (p: p5, age: number) => {
+	if (age > 0) p.fill(100, 0, p.constrain(255 - age * 5, 100, 255));
+	if (age < 0) p.fill(50 + age, 50 + age, 50 + age);
 };
+
+export const drawSubstrate = (p: p5) => {
+	for (let r = 0; r < DIMS.rows; r++) {
+		for (let c = 0; c < DIMS.cols; c++) {
+			setColorForSubstrate(p, substrateMap[r][c])
+			p.square(c * DIMS.size, r * DIMS.size, DIMS.size);
+		}
+	}
+}
+
+const setColorForSubstrate = (p: p5, substrate: Substrate) => {
+	switch (substrate) {
+		case 0: p.fill(255, 0, 0, 50); break;
+		case 1: p.fill(0, 255, 0, 50)
+	}
+}
 
 export const drawGrid = (p: p5) => {
 	p.strokeWeight(1);
